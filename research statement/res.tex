@@ -139,7 +139,7 @@ The advances in both dimensions have resulted in a comprehensive
 verification framework, named CertiKOS, and
 a series of fully verified sequential and concurrent OS kernels that were praised as ``a real breakthrough"~\cite{news, dnews}.
 This CertiKOS work composes the main body of my thesis research, which is nominated for the ACM Doctoral Award,
-and even inspires a decent research study of the science of deep specifications~\cite{deepspec}.
+and inspires a decent research study of the science of deep specifications~\cite{deepspec}.
 
 
 \subsubsection*{\small Deep Specifications and Certified Abstraction Layers}
@@ -243,6 +243,7 @@ As quoted from the Yale News, this is ``a milestone that the scientists say coul
 
 \subsubsection*{\small Adapt CertiKOS to Verify Interruptable OS Kernels and Device Drivers}
 Besides the power to build certified software systems from the scratch, CertiKOS can also be quickly adapt to support new features.
+One convincing example is our CertiKOS extensions to verify device drivers~\cite{pldi16-device}.
 In a monolithic kernel,
 device drivers are the majority of the code base, as well as the primary source of the system crashes.
 Although formal verification of device drivers is highly desirable, it is widely considered as challenging, due to the abundance of device features
@@ -252,7 +253,7 @@ To address this issue, we introduce
 a general device model that can be
 instantiated with various hardware devices and a realistic
 interrupt model that scales the reasoning
-about interruptible code~\cite{pldi16-device}. 
+about interruptible code. 
 The device drivers are modeled
 as if each of them were running on a  separate \emph{logical CPU}. This novel idea allows us to
 incrementally refine a raw
@@ -264,30 +265,30 @@ rest of the kernel. This strong isolation property
 leads to an abstract interrupt model such that
 most of the kernel execution is interrupt-unaware.
 
-We have successfully extended the CertiKOS framework with these new models
-and turned mCertiKOS
+Thanks to these new models,
+we successfully turned mCertiKOS
 %from an verified non-interruptible kernel 
-into a verified interruptible kernel with device
+into a verified interruptible kernel with verified  device
 drivers, e.g., serial, IOAPIC, etc. 
 The entire extension is realized in Coq and took roughly seven person-months.
 To the best of our knowledge, this is the first verified
 interruptible operating system with device drivers.
 
 \subsubsection*{\small End-to-End Security Verification in CertiKOS}
+Based on the contextually functional correctness guaranteed by CertiKOS, richer properties of the whole system can be derived with minimal costs.
+Take the security property as an example.
 Protecting the confidentiality of information manipulated by
 a software system is one of the critical challenges
 facing today's cybersecurity community. A promising step
 toward conquering this challenge is to  verify  the
 end-to-end information-flow
 security of the whole system formally. 
-
 This step can be naturally established
-using our CertiKOS framework~\cite{pldi16-security}. In the framework,
-we have successfully proved that mCertiKOS is end-to-end secure. We verified the noninterference between user processes 
-only at the top-most layer of mCertiKOS, but the nature of deep specifications propagates
+using our CertiKOS framework~\cite{pldi16-security}. In CertiKOS, we only need to prove the noninterference between user processes 
+ at the top-most layer of the kernel, and the nature of deep specifications propagates
 this security guarantee down to the concrete implementation.
-The security guarantee of mCertiKOS
-can be seen as end-to-end in the following two ways: (1)
+The security guarantee derived using CertiKOS
+can be seen as end-to-end in the following two aspects: (1)
 it applies across all the layers; and (2) it ensures that the entire
 execution is secure from start to finish.
 
