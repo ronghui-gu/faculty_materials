@@ -95,37 +95,56 @@ of real software systems.
 
 % Say that research work has been both theoritical and practical.
 
-\subsubsection*{\large Current Work on CertiKOS}
+\subsubsection*{\large My Current Work on CertiKOS}
 
 %[[Background, challenges: 3 points: cost, extensibility (new features + new properties), concurrency) ]]
-While such mechanical ``formal verification" has a long history dating back to the 1960s,  it only became feasible recently to formally prove the functional correctness of practical systems, e.g., OS kernels, file systems, etc.
-%~\cite{sel4}, file systems~\cite{fscq}, etc. 
-However, the cost of such verification is still quite prohibitive, and it is unclear how to quickly adapt such a verified system to support new features and enforce richer properties. Furthermore, none of these verified systems have addressed the important
+While such mechanical ``formal verification" has a long history dating back to the 1960s, 
+complete formal proofs of sequential OS kernels only became feasible recently, demonstrated by
+seL4 in 2009. The result of seL4 was so encouraging that everyone
+believed it was only a mile away to verify a real and concurrent OS kernel under reasonable efforts. However, seven years have passed,
+and the situation is not likely to get better. 
+The initial version of seL4 took 12 person-years to develop.
+Even until now, the cost of such verification is still quite prohibitive,
+ and it is unclear how to quickly adapt such a verified system to support new features and enforce richer properties. 
+Before our work, none of the existing verified systems have addressed the important
 issues of concurrency.
+This last mile once seemed insurmountable.
 %~\cite{apsys}.
-These problems severely limit
-the applicability and power of today's formally verified
-software systems.
+%These problems severely limit
+%the applicability and power of today's formally verified
+%software systems.
 
 %[[An overview of my approach, and a summary of my results]]
-My thesis research is among the first to untangle these challenges by exploring and realizing a novel class of specifications, named 
-\emph{deep specifications}, through layered approach. 
+ 
+We believe that these verification problems
+are caused by an overlook of the \emph{layered structure} in the proofs.
+Although the system implementations consist of multiple
+well-designed layers, this layered structure
+is gone in the proof when using the verification techniques like  program logics.
+Reasoning about the execution of kernel modules across different layers and among multiple threads is restricted within 
+the same abstraction level. It makes the verification
+of real software systems  difficult to untangle
+and extend.
+
+My thesis research is among the first to address these challenges
+by exploring and realizing a novel class of specifications, named \emph{deep specifications}, through layered approach.
 In theory, these layered deep specifications are rich
-enough to fully characterize the behaviors of the real system implementation
+enough to fully characterize the functionality of the system implementation
 and
 uncover the fundamental
-insights in the  layered design pattern of modern software systems. In practice, they are ``live" enough to  connect directly  with the actual  implementation and provide a modular approach to build
+insights of the  layered design pattern. In practice, they are ``live" enough to  connect   with the actual  implementation directly and provide a modular approach to building
  software system stacks that are entirely trustworthy.
 % even in the concurrent setting.
 The advances in both dimensions have resulted in a comprehensive
 verification framework, named CertiKOS, and
 a series of fully verified sequential and concurrent OS kernels that were praised as ``a real breakthrough"~\cite{news, dnews}.
-This CertiKOS work composes the main body of my thesis research, which is nominated for the ACM doctoral award,
+This CertiKOS work composes the main body of my thesis research, which is nominated for the ACM Doctoral Award,
 and even inspires a decent research study of the science of deep specifications~\cite{deepspec}.
 
 
 \subsubsection*{\small Deep Specifications and Certified Abstraction Layers}
-Modern software systems (e.g., OS kernels, hypervisors, device drivers, network protocols) are designed and constructed using a
+\begin{comment}
+Modern OS kernels are designed and constructed using a
 stack of \emph{abstraction layers},
 each of which defines an interface that hides the underlying implementation
 details. Client programs can be understood solely based on the interface,
@@ -133,21 +152,40 @@ independent of the layer implementation. Despite their huge contributions
 to the computer industry,
 abstraction layers have mostly been treated as a system
 concept; before our work, they have almost never been formally specified or verified.
+\end{comment}
+One innovation of my thesis research is that  OS kernels are treated as \emph{run-time compilers}~\cite{popl15-gu}.
+From this novel view,
+the OS kernel as a whole compiles the
+user programs that are understood using system call specifications  to the programs that interact 
+with the kernel implementation directly.
+A layer in the kernel can be viewed as a \emph{compilation phase}
+and the kernel module between two layers  is then a \emph{transformation}.
+In this way,  OS kernels can be verified by showing that
+every such transformation
+preserves the behavior of arbitrary \emph{context} programs.
+Since the preservation property holds for any context,
+these layer interfaces are named
+as deep specifications. 
 
-My thesis research proposes a novel language-based account of
-abstraction layers~\cite{popl15-gu}, whose power lies in the use of a rich class of specifications, which we call \emph{deep specifications}. 
-A deep specification captures
-the precise functionality of the implementation under any client context. 
-Once a system module is proved to meet its deep specification,
-the specification forms a new layer interface, which we call a \emph{certified abstraction layer}.
+
+As compilers enable program development
+in higher-level languages that are machine-independent,
+this layered approach allow program verification 
+at some more abstract interfaces that are implementation-independent. Each kernel module is verified
+at its proper abstraction level by showing the contextual
+simulation relation between the implementation at that level
+and the specification at a higher level.
+Once this proof is done, the specification forms a new layer interface, which we call a \emph{certified abstraction layer}.
 Any client program or any functional property of this module
-can be reasoned about using the  layer specification alone, without going through the actual implementation.
+can be reasoned about using the more abstract  layer specification alone, without going through the actual implementation.
 
 To apply layer-based verification for real software systems,
 we develop the CertiKOS framework in the Coq proof assistant
 %~\cite{coq}
 to specify, program, verify, and compose certified abstraction
-layers. CertiKOS enables users to decompose this otherwise prohibitive verification task into many simple and automatable ones, each of which can be verified at its proper abstraction level. 
+layers. With CertiKOS, the verification task of OS kernels
+can be mechanically decomposed into many simple, small, and
+independent tasks, which are automatable and scalable.
 To demonstrate the power of our framework,
  we have successfully developed multiple certified
 sequential OS kernels in Coq. 
@@ -262,7 +300,7 @@ and dramatically improve the software reliability and security.
 I plan to pursue this goal through the following three research directions at different stages.
 
 
-\subsubsection*{\small Short Term: Programming Certified Software Systems with CertiKOS Directly}
+\subsubsection*{\small Programming Certified Software Systems with CertiKOS Directly}
 Existing  projects on real system verification,
 including CertiKOS, all require   (manually)  writing the actual implementation
  in a C-like language and a formal specification in a proof assistant language.
@@ -292,7 +330,7 @@ still a tremendous research opportunity for complete functional
 synthesis and creating programs that are intelligent enough
 to do formal proofs between layers.
 
-\subsubsection*{\small Intermediate Term: Building a Zero-Vulnerability System Stack}
+\subsubsection*{\small Building a Zero-Vulnerability System Stack}
 Once the verification framework allows writing certified programs in a more direct and efficient way, I aim to utilize it to build a system stack that is entirely trustworthy. Based on the hardware that supports cryptography primitives, I want to
 establish a reliable and secure stack that integrates the device drivers,
 database system, file system, network stacks, operating system,
@@ -325,7 +363,7 @@ lies in this zero-vulnerability system stack
 and I am looking forward to exploring it.
 
 
-\subsubsection*{\small Long Term: Pushing Towards  an Industry-Scale Verification Framework}
+\subsubsection*{\small Pushing Towards  an Industry-Scale Verification Framework}
 In the future, I aim to 
 extend our verification framework such that
 the  zero-vulnerability system stack can scale to the industry level. We not only have to provide a practical and powerful
