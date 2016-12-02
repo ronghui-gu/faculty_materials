@@ -196,22 +196,22 @@ and can boot a version of Linux as a guest.
 An extended version of mCertiKOS was deployed on a military land vehicle in the context of a large DARPA-funded research project.
 
 \subsubsection*{\small Verifying Concurrent OS Kernels with CertiKOS}
-Complete formal verification of a non-trivial concurrent
-OS kernel is widely considered a grand challenge. 
-Concurrency allows interleaved
+Moving from the sequential kernel verification
+to the concurrent one is not straightforward at all.
+A concurrent kernel allows interleaved
 execution of kernel/user modules across different
 layers of abstraction. 
-Several researchers even believe that the combination of concurrency and the kernels’ functional complexity makes formal verification of functional correctness intractable,
+The complete formal verification of a non-trivial concurrent
+OS kernel is widely considered a grand challenge. 
+Several researchers even believe that the combination of concurrency and the kernels' functional complexity makes the formal verification intractable,
 and even if it is possible, the cost would far exceed that of
 verifying a single-core sequential kernel.
 
 We believe that the key to untangling this ``intractable" complexity roots in the
 strong contextual property of deep specifications~\cite{osdi16-gu}.
-A deep specification, in the concurrent setting, has to enforce  that
-the implementation meets its specification 
-not only under any client context but also under
+A deep specification, in the concurrent setting, has to ensure   the behavior preservation not only under any client context but also under
 any \emph{concurrent context} with any interleaving.
-Each execution of the system corresponds to a  concurrent context, which is represented as a list of \emph{events} that encapsulates the behavior of the rest of CPUs (or threads), as well as the interference
+Each execution of the kernel corresponds to a  concurrent context, which is represented as a list of \emph{events} that encapsulates the behavior of the rest of CPUs (or threads), as well as the interference
 among them under this execution.
 
 The \emph{certified concurrent layer}  is then parameterized over this concurrent context.
@@ -219,7 +219,7 @@ Given a particular concurrent context,
 the interleaving is determined,
 and a concurrent layer is reduced to a sequential one, which allows us to apply standard techniques for
 verifying sequential programs to build new concurrent layers.
-A newly introduced concurrent layer becomes ``deep" only after we show that its proof holds for all valid concurrent contexts.
+A newly introduced concurrent layer becomes ``deep" only after we show that its simulation proof holds for all valid concurrent contexts.
 To ease this step, we creatively lift the concurrent machine model (which allows arbitrary interleaving at any point) to an abstract local machine model,
 where all the impacts of the concurrent context are restricted at
 some certain points, i.e.,
@@ -232,7 +232,7 @@ propagated down to the execution of actual
 implementations over the  multicore hardware.
 
  
-Besides the beautiful theory of CertiKOS, in practice,
+With this concurrent framework,
 we have also successfully developed and verified a practical concurrent OS
 kernel in Coq. Our certified kernel is written in 6,500 lines of
 C and x86 assembly and runs on stock x86 multicore
