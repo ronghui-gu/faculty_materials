@@ -124,15 +124,15 @@ is gone in the proof when using the verification techniques like  program logics
 Reasoning about the execution of kernel modules across different layers and among multiple threads is restricted within 
 the same abstraction level. It makes the verification
 of real software systems  difficult to untangle
-and extend.
+and costly to extend.
 
 My thesis research is among the first to address these challenges
 by exploring and realizing a novel class of specifications, named \emph{deep specifications}, through layered approach.
 In theory, these layered deep specifications are rich
-enough to fully characterize the functionality of the system implementation
+enough to fully characterize the functionality of system implementations
 and
 uncover the fundamental
-insights of the  layered design pattern. In practice, they are ``live" enough to  connect   with the actual  implementation directly and provide a modular approach to building
+insights of  layered design patterns. In practice, they are ``live" enough to  connect   with the actual  implementation directly and provide a modular approach to building
  software system stacks that are entirely trustworthy.
 % even in the concurrent setting.
 The advances in both dimensions have resulted in a comprehensive
@@ -162,7 +162,7 @@ We can view a layer in the kernel as a \emph{compilation phase}
 and the kernel module between two layers as a \emph{transformation}.
 In this way,  OS kernels can be verified by showing that
 every such transformation
-preserves the behavior of arbitrary \emph{context} programs.
+preserves the behavior of \emph{arbitrary context programs}.
 Since the preservation property holds for any context,
 these layer interfaces are named
 as deep specifications. 
@@ -177,15 +177,15 @@ simulation relation between the implementation at that level
 and the specification at a higher level.
 Once this proof is done, the specification forms a new layer interface, which we call a \emph{certified abstraction layer}.
 Any client program or any functional property of this module
-can be reasoned about using the more abstract  layer specification alone, without going through the actual implementation.
+can be reasoned about using this more abstract  layer specification alone, without going through the actual implementation.
 
 To apply layer-based verification for real software systems,
 we develop the CertiKOS framework in the Coq proof assistant
 %~\cite{coq}
 to specify, program, verify, and compose certified abstraction
 layers. With CertiKOS, the verification task of OS kernels
-can be mechanically decomposed into many simple, small, and
-independent tasks, which are automatable and scalable.
+can be mechanically decomposed into many small, simple, and
+independent tasks, which are automatable or fitting for manual proofs.
 To demonstrate the power of our framework,
  we have successfully developed multiple certified
 sequential OS kernels in Coq. 
@@ -236,9 +236,8 @@ With this concurrent framework,
 we have also successfully developed and verified a practical concurrent OS
 kernel in Coq. Our certified kernel is written in 6,500 lines of
 C and x86 assembly and runs on stock x86 multicore
-machines. To our knowledge, this is the first proof of
-(contextual) functional correctness and progress
-property of a complete, general-purpose
+machines. To our knowledge, this is the first
+formal verification of a complete, general-purpose
 concurrent OS kernel with fine-grained locking.
 As quoted from the Yale News, this is ``a milestone that the scientists say could lead to a new generation of reliable and secure systems software"~\cite{news}.
 
