@@ -242,9 +242,9 @@ concurrent OS kernel with fine-grained locking.
 As quoted from the Yale News, this is ``a milestone that the scientists say could lead to a new generation of reliable and secure systems software"~\cite{news}.
 
 \subsubsection*{\small Adapt CertiKOS to Verify Interruptable OS Kernels and Device Drivers}
+Besides the power to build certified software systems from the scratch, CertiKOS can also be quickly adapt to support new features.
 In a monolithic kernel,
-device drivers are not only the majority of the code base
-but also the primary source of the system crashes.
+device drivers are the majority of the code base, as well as the primary source of the system crashes.
 Although formal verification of device drivers is highly desirable, it is widely considered as challenging, due to the abundance of device features
 and the non-local effects of interrupts.
 
