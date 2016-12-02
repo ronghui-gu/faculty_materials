@@ -90,7 +90,7 @@ Broadly speaking, my research
 falls into the subfield of programming languages that deals with the 
 %fundamental
 principles and practice of the formal verification
-of real software systems.
+of realistic software systems.
 
 
 % Say that research work has been both theoritical and practical.
@@ -100,8 +100,8 @@ of real software systems.
 %[[Background, challenges: 3 points: cost, extensibility (new features + new properties), concurrency) ]]
 While such mechanical ``formal verification" has a long history dating back to the 1960s, 
 complete formal proofs of sequential OS kernels only became feasible recently, demonstrated by
-seL4 in 2009. The result of seL4 was so encouraging that everyone
-believed it was only a mile away to verify a real and concurrent OS kernel under reasonable efforts. However, seven years have passed,
+the seL4 verified microkernel in 2009. The result of seL4 was so encouraging that everyone
+believed it was only a mile away from a fully verified realistic and concurrent OS kernel under reasonable efforts. However, seven years have passed,
 and the situation is not likely to get better. 
 The initial version of seL4 took 12 person-years to develop.
 Even until now, the cost of such verification is still quite prohibitive,
@@ -116,7 +116,7 @@ This last mile once seemed insurmountable.
 
 %[[An overview of my approach, and a summary of my results]]
  
-We believe that these verification problems
+We believe that these verification challenges
 are caused by an overlook of the \emph{layered structure} in the proofs.
 Although the system implementations consist of multiple
 well-designed layers, this layered structure
@@ -158,8 +158,8 @@ From this novel view,
 the OS kernel as a whole compiles the
 user programs that are understood using system call specifications  to the programs that interact 
 with the kernel implementation directly.
-A layer in the kernel can be viewed as a \emph{compilation phase}
-and the kernel module between two layers  is then a \emph{transformation}.
+We can view a layer in the kernel as a \emph{compilation phase}
+and the kernel module between two layers as a \emph{transformation}.
 In this way,  OS kernels can be verified by showing that
 every such transformation
 preserves the behavior of arbitrary \emph{context} programs.
@@ -282,9 +282,9 @@ toward conquering this challenge is to  verify  the
 end-to-end information-flow
 security of the whole system formally. 
 
-This step can be easily established
-using our CertiKOS framework~\cite{pldi16-security}. An example is our work proving
-that mCertiKOS is end-to-end secure. We verified the noninterference between user processes 
+This step can be naturally established
+using our CertiKOS framework~\cite{pldi16-security}. In the framework,
+we have successfully proved that mCertiKOS is end-to-end secure. We verified the noninterference between user processes 
 only at the top-most layer of mCertiKOS, but the nature of deep specifications propagates
 this security guarantee down to the concrete implementation.
 The security guarantee of mCertiKOS
@@ -355,7 +355,7 @@ in an isolated way and the  composition rules of CertiKOS
 could be strengthened to link all these layers. My Yale colleagues
 and I have already started to use CertiKOS to verify more systems in this stack,
 such as the file system and the network stacks.
-Meanwhile, I also work with  a research group from UPenn to
+Meanwhile, I also work with  a research group from University of Pennsylvania to
 set up a specification-based testing framework
 that enables the random test for user-level applications upon the topmost layer interface of mCertiKOS.
 I believe there is a huge research opportunity that
