@@ -285,7 +285,7 @@ end-to-end information-flow
 security of the whole system formally. 
 This step can be naturally established
 using our CertiKOS framework~\cite{pldi16-security}. In CertiKOS, we only need to prove the noninterference between user processes 
- at the top-most layer of the kernel, and the nature of deep specifications propagates
+ at the top-most layer of the system, and the nature of deep specifications propagates
 this security guarantee down to the concrete implementation.
 The security guarantee derived using CertiKOS
 can be seen as end-to-end in the following two aspects: (1)
@@ -305,30 +305,35 @@ Existing  projects on real system verification,
 including CertiKOS, all require   (manually)  writing the actual implementation
  in a C-like language and a formal specification in a proof assistant language.
 Lacking the support of directly writing certified  programs  makes it difficult to develop and maintain certified  software systems
-at scale. I aim to fill in this enormous gap between low-level system programming and high-level specification reasoning
-by
-providing
+at scale. I aim to cooperate with \emph{software synthesis} 
+and \emph{artificial intelligence} experts to fill in this enormous gap between low-level system programming and high-level specification reasoning
+by providing
 a uniform way to program certified software directly in CertiKOS.
 
 This short term goal is ambitious  but still promising.
 Due to the fact the all certified layers in CertiKOS
 are ``deep", writing the layer specification alone is enough
-to express the full functionality. I plan to extend the CertiKOS
+to express the full functionality. 
+\begin{comment}
+I plan to extend the CertiKOS
 framework such that the layer specification can be smartly 
 ``compiled" into C programs that meet the specification
-and the layers at different abstract level can be linked together in a mostly automated way. Thanks to the layered approach of CertiKOS,
-when focusing on a single verification task between two layers,
+and the layers at different abstract level can be linked together in a mostly automated way.
+\end{comment}
+ %Thanks to the layered approach of CertiKOS,
+When focusing on a single verification task between two layers,
  the gap between the implementation and its deep specification, as well as the gap between the abstraction of two layer interfaces,
 are not that big. I believe that we could generate
 certified code from our deep specifications
 following the line of the program synthesis work
 and could link layers at different levels automatically
 by taking advantage of the recent progress in
-artificial intelligence[]. We have successfully generated
+artificial intelligence. We have successfully generated
 the page allocator module of mCertiKOS. But there is
-still a tremendous research opportunity for complete functional
+still a tremendous research opportunity 
+for complete functional
 synthesis and creating programs that are intelligent enough
-to do formal proofs between layers.
+to do formal proofs to linkx layers.
 
 \subsubsection*{\small Building a Zero-Vulnerability System Stack}
 Once the verification framework allows writing certified programs in a more direct and efficient way, I aim to utilize it to build a system stack that is entirely trustworthy. Based on the hardware that supports cryptography primitives, I want to
@@ -370,7 +375,7 @@ the  zero-vulnerability system stack can scale to the industry level. We not onl
 set of standard certified libraries but also need to redesign
 the specification language such that
 it could precisely and efficiently describe the functionality
-and is acceptable by average engineers.
+but is stil acceptable by average engineers.
 If successful,
 this research will make
 the real software systems truly reliable and secure, making  a profound impact on the software industry
