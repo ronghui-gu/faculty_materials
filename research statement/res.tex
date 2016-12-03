@@ -163,9 +163,9 @@ and the kernel module between two layers as a \emph{transformation}.
 In this way,  OS kernels can be verified by showing that
 every such transformation
 preserves the behavior of \emph{arbitrary context programs}.
-Since the preservation property holds for any context,
+Due to the contextual preservation property,
 these layer interfaces are named
-as deep specifications. 
+as deep specifications, which captures the precise functionality of the implementation under any context.
 
 
 As compilers enable program development
@@ -174,8 +174,8 @@ this layered approach allow program verification
 at some more abstract interfaces that are implementation-independent. Each kernel module is verified
 at its proper abstraction level by showing the contextual
 simulation relation between the implementation at that level
-and the specification at a higher level.
-Once this proof is done, the specification forms a new layer interface, which we call a \emph{certified abstraction layer}.
+and the deep specification at a higher level.
+Once this proof is done, the deep specification forms a new layer interface, which we call a \emph{certified abstraction layer}.
 Any client program or any functional property of this module
 can be reasoned about using this more abstract  layer specification alone, without going through the actual implementation.
 
@@ -185,7 +185,7 @@ we develop the CertiKOS framework in the Coq proof assistant
 to specify, program, verify, and compose certified abstraction
 layers. With CertiKOS, the verification task of OS kernels
 can be mechanically decomposed into many small, simple, and
-independent tasks, which are automatable or fitting for manual proofs.
+independent tasks, which are fitting for manual proofs or automatable.
 To demonstrate the power of our framework,
  we have successfully developed multiple certified
 sequential OS kernels in Coq. 
@@ -294,10 +294,10 @@ execution is secure from start to finish.
 
 \subsubsection*{\large Future Research Agenda}
 The goal of my research is to
-integrate the efficient and scalable formal verification
-into the build of real software systems
-and dramatically improve the software reliability and security. 
-I plan to pursue this goal through the following three research directions at different stages.
+integrate the efficient and scalable formal verification techniques
+into the development of real software systems 
+and improve the software reliability and security.
+I plan to pursue this goal through the following research directions at different stages.
 
 
 \subsubsection*{\small Programming Certified Software Systems with CertiKOS Directly}
@@ -305,12 +305,12 @@ Existing  projects on real system verification,
 including CertiKOS, all require   (manually)  writing the actual implementation
  in a C-like language and a formal specification in a proof assistant language.
 Lacking the support of directly writing certified  programs  makes it difficult to develop and maintain certified  software systems
-at scale. I aim to cooperate with \emph{software synthesis} 
+at scale. I aim to cooperate with \emph{program synthesis} 
 and \emph{artificial intelligence} experts to fill in this enormous gap between low-level system programming and high-level specification reasoning
 by providing
 a uniform way to program certified software directly in CertiKOS.
 
-This short term goal is ambitious  but still promising.
+This short-term goal is ambitious but still promising.
 Due to the fact the all certified layers in CertiKOS
 are ``deep", writing the layer specification alone is enough
 to express the full functionality. 
@@ -322,18 +322,17 @@ and the layers at different abstract level can be linked together in a mostly au
 \end{comment}
  %Thanks to the layered approach of CertiKOS,
 When focusing on a single verification task between two layers,
- the gap between the implementation and its deep specification, as well as the gap between the abstraction of two layer interfaces,
-are not that big. I believe that we could generate
+ the gap between the implementation and its deep specification, as well as the gap between the two adjacent deep specifications
+are relatively small. I believe that we could generate the
 certified code from our deep specifications
 following the line of the program synthesis work
-and could link layers at different levels automatically
+and could link adjacent layers automatically
 by taking advantage of the recent progress in
-artificial intelligence. We have successfully generated
+artificial intelligence. We have successfully synthesize
 the page allocator module of mCertiKOS. But there is
 still a tremendous research opportunity 
-for complete functional
-synthesis and creating programs that are intelligent enough
-to do formal proofs to linkx layers.
+for the complete functional
+synthesis and intelligent proof generator.
 
 \subsubsection*{\small Building a Zero-Vulnerability System Stack}
 Once the verification framework allows writing certified programs in a more direct and efficient way, I aim to utilize it to build a system stack that is entirely trustworthy. Based on the hardware that supports cryptography primitives, I want to
@@ -374,11 +373,11 @@ extend our verification framework such that
 the  zero-vulnerability system stack can scale to the industry level. We not only have to provide a practical and powerful
 set of standard certified libraries but also need to redesign
 the specification language such that
-it could precisely and efficiently describe the functionality
-but is stil acceptable by average engineers.
+they are not only rich and precise 
+but also natural and simple for software engineers.
 If successful,
 this research will make
-the real software systems truly reliable and secure, making  a profound impact on the software industry
+the real software systems truly reliable and secure, creating  a profound impact on the software industry
  and the society in general.
  
 \vspace{0.5cm}
