@@ -98,17 +98,15 @@ of realistic software systems.
 \subsubsection*{\large My Current Work on CertiKOS}
 
 %[[Background, challenges: 3 points: cost, extensibility (new features + new properties), concurrency) ]]
-While such mechanical ``formal verification" has a long history dating back to the 1960s, 
-complete formal proofs of sequential OS kernels only became feasible recently, demonstrated by
-the seL4 verified microkernel in 2009. The result of seL4 was so encouraging that everyone
-believed it was only a mile away from a fully verified realistic and concurrent OS kernel under reasonable efforts. However, seven years have passed,
-and the situation is not likely to get better. 
-The initial version of seL4 took 12 person-years to develop.
-Even until now, the cost of such verification is still quite prohibitive,
- and it is unclear how to quickly adapt such a verified system to support new features and enforce richer properties. 
-Before our work, none of the existing verified systems have addressed the important
+While such mechanical ``formal verification" can date back to the 1960s, 
+complete formal proofs of sequential OS kernels only became feasible recently, demonstrated by seL4 in 2009. This result was so encouraging that it seemed only a mile away from a fully verified concurrent kernel with reasonable proof efforts. However, 
+seven years have passed,
+this last mile is still insurmountable.
+Even in the sequential setting, the cost of such verification is quite prohibitive
+(seL4 took 12 person-years to develop), and
+ it is unclear how to quickly adapt such a verified system to support new features and enforce richer properties. 
+Furthermore, none of the previously verified systems have addressed the
 issues of concurrency.
-This last mile once seemed insurmountable.
 %~\cite{apsys}.
 %These problems severely limit
 %the applicability and power of today's formally verified
@@ -116,30 +114,29 @@ This last mile once seemed insurmountable.
 
 %[[An overview of my approach, and a summary of my results]]
  
-We believe that these verification challenges
+We believe that these problems
 are caused by an overlook of the \emph{layered structure} in the proofs.
-Although the system implementations consist of multiple
-well-designed layers, this layered structure
-is gone in the proof when using the verification techniques like  program logics.
-Reasoning about the execution of kernel modules across different layers and among multiple threads is restricted within 
-the same abstraction level. It makes the verification
-of real software systems  difficult to untangle
+Although modern systems are implemented with multiple
+well-designed layers, this layered structure has not been exploited by the verification techniques like program logics: kernel modules across different layers and among multiple threads have to be reasoned about within 
+the same abstraction level. It makes the system verification
+difficult to untangle
 and costly to extend.
 
 My thesis research is among the first to address these challenges
 by exploring and realizing a novel class of specifications, named \emph{deep specifications}, through layered approach.
 In theory, these layered deep specifications are rich
-enough to fully characterize the functionality of system implementations
+enough to fully characterize the functionality of systems
 and
-uncover the fundamental
-insights of  layered design patterns. In practice, they are ``live" enough to  connect   with the actual  implementation directly and provide a modular approach to building
+uncover the 
+insights of  layered design patterns. In practice, they are ``live" enough to  connect   with the actual  implementation and provide a modular approach to building
  software system stacks that are entirely trustworthy.
 % even in the concurrent setting.
 The advances in both dimensions have resulted in a comprehensive
 verification framework, named CertiKOS, and
-a series of fully verified sequential and concurrent OS kernels that were praised as ``a real breakthrough"~\cite{news, dnews}.
-This CertiKOS work composes the main body of my thesis research, which is nominated for the ACM Doctoral Award,
-and inspires a decent research study of the science of deep specifications~\cite{deepspec}.
+a series of fully verified sequential and concurrent OS kernels.
+This CertiKOS work wins an ACM Doctoral Award Nomination for my thesis research,
+inspires a decent research study of the science of deep specifications~\cite{deepspec},
+and was praised as ``a real breakthrough"~\cite{news, dnews}.
 
 
 \subsubsection*{\small Deep Specifications and Certified Abstraction Layers}
@@ -242,7 +239,7 @@ concurrent OS kernel with fine-grained locking.
 As quoted from the Yale News, this is ``a milestone that the scientists say could lead to a new generation of reliable and secure systems software"~\cite{news}.
 
 \subsubsection*{\small Adapt CertiKOS to Verify Interruptable OS Kernels and Device Drivers}
-Besides the power to build certified software systems from the scratch, CertiKOS can also be quickly adapt to support new features.
+Besides the power to build certified software systems from  scratch, CertiKOS can also be quickly adapt to support new features.
 One convincing example is our CertiKOS extensions to verify device drivers~\cite{pldi16-device}.
 In a monolithic kernel,
 device drivers are the majority of the code base, as well as the primary source of the system crashes.
@@ -289,7 +286,7 @@ using our CertiKOS framework~\cite{pldi16-security}. In CertiKOS, we only need t
 this security guarantee down to the concrete implementation.
 The security guarantee derived using CertiKOS
 can be seen as end-to-end in the following two aspects: (1)
-it applies across all the layers; and (2) it ensures that the entire
+it applies across all the layers, and (2) it ensures that the entire
 execution is secure from start to finish.
 
 \subsubsection*{\large Future Research Agenda}
@@ -300,20 +297,20 @@ and improve the software reliability and security.
 I plan to pursue this goal through the following research directions at different stages.
 
 
-\subsubsection*{\small Programming Certified Software Systems with CertiKOS Directly}
+\subsubsection*{\small Programming Certified Software Systems Directly}
 Existing  projects on real system verification,
 including CertiKOS, all require   (manually)  writing the actual implementation
  in a C-like language and a formal specification in a proof assistant language.
 Lacking the support of directly writing certified  programs  makes it difficult to develop and maintain certified  software systems
 at scale. I aim to cooperate with \emph{program synthesis} 
-and \emph{artificial intelligence} experts to fill in this enormous gap between low-level system programming and high-level specification reasoning
+and \emph{artificial intelligence} researchers to bridge this enormous gap between low-level system programming and high-level specification reasoning
 by providing
-a uniform way to program certified software directly in CertiKOS.
+a uniform way to program certified software directly.
 
 This short-term goal is ambitious but still promising.
-Due to the fact the all certified layers in CertiKOS
-are ``deep", writing the layer specification alone is enough
-to express the full functionality. 
+Because the deep specification
+precisely captures the contextual functionality of the implementation, why not only write the layer specifications
+and then automatically generate the whole system from the layers?
 \begin{comment}
 I plan to extend the CertiKOS
 framework such that the layer specification can be smartly 
@@ -322,23 +319,91 @@ and the layers at different abstract level can be linked together in a mostly au
 \end{comment}
  %Thanks to the layered approach of CertiKOS,
 When focusing on a single verification task between two layers,
- the gap between the implementation and its deep specification, as well as the gap between the two adjacent deep specifications
+ the gap between the implementation and its deep specification, as well as the gap between two adjacent specifications
 are relatively small. I believe that we could generate the
 certified code from our deep specifications
 following the line of the program synthesis work
 and could link adjacent layers automatically
 by taking advantage of the recent progress in
-artificial intelligence. We have successfully synthesize
-the page allocator module of mCertiKOS. But there is
+artificial intelligence. We have successfully synthesized
+a page allocator module consisting of four layers. But there is
 still a tremendous research opportunity 
 for the complete functional
 synthesis and intelligent proof generator.
 
-\subsubsection*{\small Building a Zero-Vulnerability System Stack}
-Once the verification framework allows writing certified programs in a more direct and efficient way, I aim to utilize it to build a system stack that is entirely trustworthy. Based on the hardware that supports cryptography primitives, I want to
-establish a reliable and secure stack that integrates the device drivers,
-database system, file system, network stacks, operating system,
- and trustable applications.
+\subsubsection*{\small Apply Verification Techniques to Various Domains}
+OS kernel is not the only area that can benefit
+from our formal verification techniques. In the next five years, I aim to work on the reliability and security issues
+in the following domains: 
+\begin{itemize}
+\item I plan to cooperate with \emph{system researchers} to build a zero-vulnerability system stack consisting of verified components, such as device drivers,
+database system, file system, network stack, operating system,
+ and distributed system.
+ Although each of these components has been actively studied,
+ most of them  (e.g., file systems) only have sequential versions been verified, and there is a high demand to 
+link all their guarantees together
+to form  a  trustworthy system stack. Our success on  device driver extensions
+reveals a promising way to addressing these challenges.
+For different systems, we could
+provide ``customized" machine models
+by exposing a particular set of hardware features
+and an abstract interface of the depending systems.
+It will enable a domain-specific approach to building certified layers for each system separately
+and all these layers can still be glued together.
+
+\item I plan to cooperate with \emph{security researchers}
+to  develop certified 
+commercial-grade toolkit for security
+protocols. 
+For those layer-based protocols (e.g., TLS and SSL), the layered verification approach will be a perfect fit.
+The certified concurrent  layers can scale the existing security proofs by instantiating the widely-used oracle techniques
+with the concept of our concurrent context. 
+
+\item I plan to cooperate with
+\emph{cyber-physical system (CPS) researchers} to build
+high-confident CPS with real-time guarantee.
+Due to the physical consequences, it is highly desirable to
+prove that CPS behaves as required in terms of both functionality and timing. 
+We have built an embedded system (an variant of mCertiKOS) that is proved to be functional correct and can run on a real drone. However, it is still a big challenge on how to formally model the time. We believe that the cure is still the event-based concurrent context. The flow of time can be represented
+as a list of special events, which will be indicated by a timing oracle
+that is enriched from the concurrent context. Thus, we can apply 
+our concurrent verification techniques to prove
+ real-time properties.
+I am looking forward to exploring this huge research opportunity when combining the formal verification with CPS.
+\item I plan to cooperate with
+\emph{program analysis} researchers to establish a general and efficient specification-based testing framework.
+For non-critical software (e.g, user-level apps), 
+random test is more applicable and productive than
+a complete formal verification.
+But how to generate test cases smartly is always challenging for concurrent programs.
+We believe that deep specifications can be utilized to inspire the test-case generation. Due to the ``live" property, we can run these tests  over the deep specifications directly without waiting for the responses from heavy workload operations. There is a huge research opportunity to exploring the
+testing framework based on deep specifications.
+\end{itemize}
+
+\begin{comment}
+
+There is a huge research opportunity 
+lying in this zero-vulnerability system stack, but 
+
+My Yale colleagues
+and I have already started to use CertiKOS to verify more systems in this stack,
+such as the file system and the network stacks.
+Meanwhile, 
+set up 
+that enables the random test for user-level applications upon the topmost layer interface of mCertiKOS.
+I believe there is a huge research opportunity that
+
+and I am looking forward to exploring it.
+
+
+ 
+ dramatically improve
+the reliability and security of computing hosts in the critical areas.
+This goal requires a wide and profound
+cooperation with researchers in different areas.
+
+utilize it  Based on the hardware that supports cryptography primitives, I want to
+establish a reliable and secure stack that integrates the
 This zero-vulnerability system stack will dramatically improve
 the reliability and security of computing hosts in the critical areas. 
 However, there are two significant challenges in building such a stack:
@@ -365,10 +430,11 @@ that enables the random test for user-level applications upon the topmost layer 
 I believe there is a huge research opportunity that
 lies in this zero-vulnerability system stack
 and I am looking forward to exploring it.
+\end{comment}
 
 
 \subsubsection*{\small Pushing Towards  an Industry-Scale Verification Framework}
-In the future, I aim to 
+In the long term, I aim to 
 extend our verification framework such that
 the  zero-vulnerability system stack can scale to the industry level. We not only have to provide a practical and powerful
 set of standard certified libraries but also need to redesign
