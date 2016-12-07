@@ -21,7 +21,7 @@
 %\marginsize{0.85in}{0.85in}{0.625in}{0.625in}
 
 \advance\oddsidemargin-.96in
-%\advance\evensidemargin-1.5cm
+\advance\evensidemargin-.096cm
 \textheight9.2in
 \textwidth6.75in
 \newcommand\bb[1]{\mbox{\em #1}}
@@ -85,11 +85,12 @@ modern software systems,
 operating system (OS) kernels,
 on the one hand,
  can have the greatest impact on the reliability and security of today's computing host.
-On the other hand, OS kernels are complicated, highly-parallel, and prone to bugs. For the past several years,  my research has focused on developing scalable tools to build verified sequential and concurrent OS kernels that are formally proved to be error-free and secure~\cite{popl15-gu, osdi16-gu, pldi16-security, pldi16-device}.
+On the other hand, OS kernels are complicated, highly-parallel, and prone to bugs.  For the past several years,  my research has focused on investigating programming language theories and developing scalable tools to build verified sequential and concurrent OS kernels that are formally proved to be error-free and secure~\cite{popl15-gu, osdi16-gu, pldi16-security, pldi16-device}.
 Broadly speaking, my research
 falls into 
 the subfield of programming languages that
-deals with the formal verification of practical software systems.
+deals with the principles and practice of  the formal verification
+of real software systems.
 %fundamental 
 %the real system verification.
 % principles and practice of :  
@@ -100,12 +101,18 @@ deals with the formal verification of practical software systems.
 \subsubsection*{\large My Current Work on CertiKOS}
 
 %[[Background, challenges: 3 points: cost, extensibility (new features + new properties), concurrency) ]]
+My research approach  is to explore clean and concise
+programming language theories that 
+reveal the fundamental insights of system design patterns
+and system feature models and to apply these theories
+to build practical systems that behave as required
+through formal verification. 
 While such mechanical ``formal verification" can date back to the 1960s, 
 complete formal proofs of sequential OS kernels only became feasible recently, demonstrated by seL4 in 2009. This result was so encouraging that it seemed only a mile away from a fully verified concurrent kernel under reasonable proof efforts. However, 
 seven years have passed,
 this last mile is still insurmountable.
 Even in the sequential setting, the cost of such verification is quite prohibitive
-(seL4 took 12 person-years to develop), and
+(seL4 took 11 person-years to develop), and
  it is unclear how to quickly adapt such a verified system to support new features and enforce richer properties. 
 Furthermore, none of the previously verified systems have addressed the
 issues of concurrency.
@@ -117,15 +124,15 @@ issues of concurrency.
 %[[An overview of my approach, and a summary of my results]]
  
 We believe that these problems
-are caused by an overlook of the \emph{layered structure} in the proofs.
-Although modern systems are implemented with multiple
-well-designed layers, this layered structure has not been exploited by the verification techniques like program logics: kernel modules across different layers and among multiple threads have to be reasoned about within 
+are caused by an overlook of the \emph{layered structure} in the programming language theories.
+Although modern systems are implemented with
+well-designed layers, this layered structure has not been exploited by the verification techniques like program logics:  modules across different layers and multiple threads have to be reasoned about within 
 the same abstraction level. It makes the system verification
-difficult to untangle
+hard to untangle
 and costly to extend.
 
 My thesis research is among the first to address these challenges
-by exploring and realizing a novel class of specifications, named \emph{deep specifications}, through layered approach.
+by advocating and realizing a novel class of specifications, named \emph{deep specifications}, through layered approach.
 In theory, these layered deep specifications uncover the 
 insights of  layered design patterns
 and are rich
@@ -135,9 +142,9 @@ enough to fully characterize the system's functionality. In practice, they are `
 The advances in both dimensions have resulted in a comprehensive
 verification framework, named CertiKOS, and
 a series of fully verified sequential and concurrent OS kernels.
-This CertiKOS work wins an ACM Doctoral Award Nomination for my thesis research,
-inspires a decent research study of the science of deep specifications~\cite{deepspec},
-and was praised as ``a real breakthrough"~\cite{news, dnews}.
+This CertiKOS work is used in high-profile DARPA programs~\cite{crash,hacms},
+is the core component of an NSF Expeditions in Computing project~\cite{deepspec}, and was widely considered
+ ``a real breakthrough" toward hacker-resistant systems~\cite{news, times, dnews}.
 
 
 \subsubsection*{\small Deep Specifications and Certified Abstraction Layers}
@@ -157,10 +164,11 @@ the OS kernel as a whole compiles the
 user programs that are understood using system call specifications  to the programs that interact 
 with the kernel implementation directly.
 We can view a layer in the kernel as a \emph{compilation phase}
-and the kernel module between two layers as a \emph{transformation}.
+and the kernel module between two layers as a \emph{compiler transformation}.
 In this way,  OS kernels can be verified by showing that
 every such transformation
-preserves the behavior of \emph{arbitrary context programs}.
+preserves the behavior of \emph{arbitrary context programs}
+and all the compilation phases can be composed into a \emph{compositional compiler}.
 Due to the contextual preservation property,
 these layer interfaces are named
 as deep specifications, which precisely capture the functionality of the implementation under any context.
@@ -168,8 +176,8 @@ as deep specifications, which precisely capture the functionality of the impleme
 
 As compilers enable the program development
 in higher-level and machine-independent languages,
-this layered approach allows the program verification 
-at some more abstract interfaces that are implementation-independent. Each module is verified
+this layer-based theory allows the program verification 
+at some more abstract interfaces that are implementation independent. Each module is verified
 at its proper abstraction level by showing the contextual
 simulation between the implementation at that level
 and the deep specification at a higher level.
@@ -177,28 +185,32 @@ Once this proof is done, the deep specification forms a new layer interface, whi
 Any client program or any functional property of this module
 can be reasoned about using this more abstract  layer specification alone, without going through the actual implementation.
 
-To apply this layer-based verification for real software systems,
-we develop the CertiKOS framework to  specify,  verify, and compose certified abstraction layers  in the Coq proof assistant.
+To apply this layer-based theory for the verification of real software systems,
+we develop the CertiKOS framework to  specify,  verify,  and compose certified abstraction layers  in the Coq proof assistant.
+We also extended
+the CompCert verified compiler to compile certified C layers such
+that they can be linked with assembly layers.
 With CertiKOS, the verification task of OS kernels
 can be mechanically decomposed into many small, simple, and
 independent tasks, which are fitting for manual proofs or automatable.
-To demonstrate the power of our framework,
+To demonstrate the power of our  framework,
  we have successfully developed multiple certified
 sequential OS kernels in Coq. 
 The most realistic one is called mCertiKOS,
 which consists of 37 certified abstraction layers, 
 took less than one person-year to develop,
 and can boot a version of Linux as a guest.
-An extended version of mCertiKOS was deployed on a military land vehicle in the context of a large DARPA-funded research project.
+An extended version of mCertiKOS was deployed on a military land vehicle in the context of a high-profiled  DARPA program
+~\cite{hacms}.
 
 \subsubsection*{\small Verifying Concurrent OS Kernels with CertiKOS}
 Moving from the sequential kernel verification
-to the concurrent one is not straightforward at all.
-A concurrent kernel allows interleaved
+to the concurrent one is not straightforward at all
+and requires a more powerful compositional theory.
+A concurrent kernel allows arbitrarily  interleaved
 execution of kernel/user modules across different
 layers of abstraction. 
-The complete formal verification of a non-trivial concurrent
-OS kernel is widely considered a grand challenge. 
+%The complete formal verification of a non-trivial concurrent OS kernel is widely considered a grand challenge. 
 Several researchers even believe that the combination of concurrency and the kernels' functional complexity makes the formal verification intractable,
 and even if it is possible, the cost would far exceed that of
 verifying a single-core sequential kernel.
@@ -207,10 +219,13 @@ We believe that the key to untangling this ``intractable" complexity roots in th
 strong contextual property of deep specifications~\cite{osdi16-gu}.
 A deep specification, in the concurrent setting, has to ensure   the behavior preservation not only under any client context but also under
 any \emph{concurrent context} with any interleaving.
-Each execution of the kernel corresponds to a  concurrent context, which is represented as a list of \emph{events} that encapsulates the behaviors of the rest of CPUs (or threads), as well as the interference
-among them under this   execution.
+A  concurrent context corresponds to
+a particular execution of the kernel  and is represented as a list of \emph{events} that encapsulates the behaviors of the rest of CPUs (or threads), as well as the interference
+among them under this  execution.
 
-The \emph{certified concurrent layer}  is then parameterized over this concurrent context.
+The \emph{certified concurrent layer}  is then parameterized over this concurrent context,
+and a new layer-based theory is developed to 
+compose certified concurrent layers with valid concurrent contexts.
 Given a particular concurrent context,
 the interleaving is determined,
 and a concurrent layer is reduced to a sequential one, which allows us to apply sequential verification techniques for
@@ -219,34 +234,34 @@ A newly introduced concurrent layer becomes ``deep" only after we show that its 
 To ease this step, we creatively lift the concurrent machine model (which allows arbitrary interleaving at any point) to an abstract local machine model,
 where all the impacts of the concurrent context are restricted at
 some certain points, i.e.,
-just before the invocations of synchronization primitives. This machine-lifting idea
+just before the invocations of synchronization primitives. The theory of this machine lifting
 enables the \emph{local reasoning} of multicore (and multithreaded) programs,
-without worrying about the  interleaving except for a few specific places. Furthermore, this machine lifting also guarantees that the local reasoning of all the
-CPUs (and threads) can be composed together
-and then 
-propagated down to the execution of actual 
-implementations over the  multicore hardware.
-
+without worrying about the  interleaving except for a few specific places. 
+Furthermore, based on this machine-lifting theory,
+we introduce CompCertX, i.e., a thread-safe version of
+the CompCert compiler, to compile concurrent C layers
+into assembly ones and 
+propagate the guarantees down to the assembly-level executions  over the multicore hardware.
  
-With this concurrent framework,
+With this concurrent layer-based theory,
 we have also successfully developed and verified a practical concurrent OS
 kernel in Coq. Our certified kernel is written in 6,500 lines of
 C and x86 assembly and runs on stock x86 multicore
 machines. To our knowledge, this is the first fully verified concurrent
 OS kernel  with fine-grained locking.
-The Yale News recognized our work as ``a milestone that the scientists say could lead to a new generation of reliable and secure systems software"~\cite{news}.
+This work is recognized as ``a milestone that the scientists say could lead to a new generation of reliable and secure systems software"~\cite{news}.
 
-\subsubsection*{\small Adapt CertiKOS to Verify Interruptable OS Kernels and Device Drivers}
-Besides the power to build certified software systems from  scratch, CertiKOS can also be quickly adapt to support new features.
+\subsubsection*{\small Adapt CertiKOS to Verify Interruptible OS Kernels and Device Drivers}
+Besides the power to build certified software systems from  scratch, our layer-based theory makes it efficient to introduce new system features.  
 One convincing example is our CertiKOS extensions for verifying device drivers~\cite{pldi16-device}.
 In a monolithic kernel,
 device drivers are the majority of the code base, as well as the primary source of the system crashes.
 Although formal verification of device drivers is highly desirable, it is widely considered as challenging, due to the abundance of device features
 and the non-local effects of interrupts.
 
-To address this issue, we introduce
+To address this issue, we extend the certified layer with
 a general device model that can be
-instantiated with various hardware devices, and a realistic
+instantiated with various hardware devices and a realistic
 interrupt model that scales the reasoning
 about interruptible code. 
 The device drivers are modeled
@@ -256,22 +271,22 @@ device into more and more abstract devices
 by building certified layers of the relevant driver on its logical CPU.
 Meanwhile, this idea systematically enforces
 the isolation among different devices and the
-rest of the kernel. This strong isolation property 
+rest of the kernel. The strong isolation property 
 leads to an abstract interrupt model such that
 most of the kernel execution is interrupt-unaware.
 
-Thanks to these new models,
+Thanks to the layer-based theory equipped with these new models,
 we successfully turned mCertiKOS
 %from an verified non-interruptible kernel 
-into a verified interruptible kernel with verified  device
+into an  interruptible kernel with verified  device
 drivers, e.g., serial, IOAPIC, etc. 
-The entire extension  took roughly seven person-months
+The entire extension  took  seven person-months
 to implement in Coq.
 To the best of our knowledge, this is the first verified
-interruptible operating system with device drivers.
+interruptible OS kernel with device drivers.
 
 \subsubsection*{\small End-to-End Security Verification in CertiKOS}
-In CertiKOS, richer properties of the whole system can be
+In the layer-based theory, richer properties of the whole system can be
 directly derived  from the deep specifications.
 Take the security property as an example.
 Protecting the confidentiality of information manipulated by
@@ -291,9 +306,9 @@ execution is secure from start to finish.
 
 \subsubsection*{\large Future Research Agenda}
 The goal of my research is to
-integrate the efficient and scalable formal verification techniques
-into the development of real software systems 
-and improve the software reliability and security.
+integrate the clean and concise programming language theories
+into the development of formally verified software systems 
+and make them reliable and secure.
 I plan to pursue this goal through the following research directions at different stages.
 
 
@@ -303,8 +318,8 @@ including CertiKOS, all require   (manually)  writing the actual implementation
  in a C-like language and a formal specification in a proof assistant language.
 Lacking the support of  writing certified  programs  directly makes the certified  software systems difficult to develop and maintain. I aim to cooperate with \emph{program synthesis} 
 and \emph{artificial intelligence} researchers to bridge this enormous gap between the low-level system programming and the high-level specification reasoning
-by providing
-a uniform way to program certified software directly.
+through
+a uniform framework that enables programming certified software directly.
 
 This short-term goal is ambitious but still promising.
 Because the deep specification
@@ -321,16 +336,17 @@ When focusing on a single verification task between two layers,
  the gap between the implementation and its deep specification, as well as the gap between two adjacent specifications
 are relatively small.  We have already synthesized
 a page allocator module consisting of four layers. 
-I aim to  generate a complete  kernel
- from our deep specifications
+I aim to  exploit this uniform framework into more depth by attempting to generate a complete kernel
+ from layer specifications
 following the line of the program synthesis work
 and link adjacent layers automatically
 by taking advantage of the recent progress in the
 artificial intelligence research.
 
-\subsubsection*{\small Apply Verification Techniques to Various Domains}
+\subsubsection*{\small Apply Verification Theories to Various Domains}
 OS kernel is not the only area that can benefit
-from our formal verification techniques. In the next five years, I will further investigate the reliability and security improvements
+from the formal verification techniques. In the next five years, I will further investigate more powerful and more compositional  verification theories
+and apply them
 in the following domains: 
 \begin{itemize}
 \item I plan to cooperate with \emph{system researchers} to build a zero-vulnerability system stack consisting of verified components, such as device drivers,
@@ -343,10 +359,12 @@ to form  a  trustworthy system stack. Our success on  device driver extensions
 reveals a promising way to addressing these challenges.
 For different systems, we may
 provide ``customized" machine models
-by exposing an  interface that abstracts  a particular set of hardware features
-and other depending components.
-It will enable a domain-specific approach to building certified layers for each system separately
-and all these layers can still be glued together.
+by exposing an  interface that abstracts  a particular set of system features.
+It will enable a domain-specific approach to building certified layers for each system separately.
+The major issue is how to link together these layers with various reliability requirements
+and different system features with a single computational theory.
+I am looking forward to exploring this huge research opportunity.
+
 
 \item I plan to cooperate with \emph{security researchers}
 to  develop certified 
@@ -354,19 +372,19 @@ commercial-grade toolkit for security
 protocols. 
 For those layer-based protocols (e.g., TLS and SSL), the layered verification approach will be a perfect fit.
 The concept of our certified concurrent  layers can scale the existing security proofs by instantiating the widely-used oracle techniques
-with the concurrent context. 
+with the concurrent context. The theoretical challenge that I have to solve is
+how to preserve the security guarantees under the simulation with concurrent context.
 
 \item I plan to cooperate with
 \emph{cyber-physical system (CPS) researchers} to build
-high-confident CPS with the real-time guarantee.
+high-confident CPS with the real-time assurance.
 Due to the physical consequences, it is highly desirable to
 prove that CPS behaves as required in terms of both functionality and timing. 
-We have built an embedded system (a variant of mCertiKOS) that is proved to be functionally correct and can run on a real drone. As for the timing properties, we may
-model  the flow of time 
-as a list of special events, which will be indicated by a timing oracle that is enriched from the concurrent context.
-In this way, we can apply 
+We have built an embedded system (a variant of mCertiKOS) that is proved to be functionally correct and can run on a real drone. But the most difficult problem left is how to formally
+model the time in theory. My proposal is to abstract the flow of time  as a list of special events, which will be indicated by a timing oracle that is enriched from the concurrent context.
+With this model, we can apply 
 our concurrent verification techniques to prove
- real-time properties.
+ real-time properties. I hope to explore this timing theory in the near future.
  
 \begin{comment}
 However, it is still a big challenge on how to formally model the time. We believe that the cure is still the event-based concurrent context.  
@@ -379,7 +397,7 @@ For concurrent software (e.g., user-level apps) without high-reliability require
 the complete formal verification is unnecessary and too expensive,
 while the
 random testing is difficult to detect concurrent-bugs caused by some certain interleaving.
-We plan to utilize deep specifications to generate the test cases
+We plan to solve this research problem by utilizing deep specifications to generate the test cases
 smartly in the concurrent setting. Due to the ``live" property, we may also run these tests  over the deep specifications directly, without waiting for the responses from heavy-workload operations. 
 
 \end{itemize}
@@ -442,9 +460,8 @@ and I am looking forward to exploring it.
 \subsubsection*{\small Pushing Towards  an Industry-Scale Verification Framework}
 In the long term, I aim to 
 scale our verification techniques  to the industry level. To achieve that, we not only have to provide a practical and powerful
-set of standard certified libraries but also need to redesign
-the specification language. I aim to make the deep specifications  not only rich and precise 
-but also natural and simple for software engineers.
+set of standard certified libraries but also need to make a breakthrough in the theory of specifications. I aim to make the deep specifications  not only rich and precise 
+but also natural and straightforward for software engineers.
 If successful,
 this research will make
 the real software systems truly reliable and secure, creating  a profound impact on the software industry
@@ -489,11 +506,29 @@ H. Chen,  X. Wu, Z. Shao, J. Lockerman, and R. Gu. ``Toward compositional verifi
 
 % VIMP - Change to TR report.
 
+
+
+\bibitem[DeepSpec]{deepspec}
+DeepSpec: The science of deep specifications. 
+\url{http://deepspec.org/}.
+
+\bibitem[HACMS]{hacms}
+High-Assurance Cyber Military Systems (HACMS). 
+\url{http://opencatalog.darpa.mil/HACMS.html}.
+
+\bibitem[CRASH]{crash}
+Clean-slate design of Resilient, Adaptive, Secure Hosts (CRASH). 
+\url{http://www.darpa.mil/program/clean-slate-design-of-resilient-adaptive-secure-hosts}.
+
 \bibitem[YaleNews]{news}
 ``CertiKOS: A breakthrough toward hacker-resistant operating systems." \emph{Yale News}, 2016.
 \url{http://news.yale.edu/2016/11/14/certikos-breakthrough-toward-hacker-resistant-operating-systems}.
 
-\bibitem[YaleDailyNews]{dnews}
+\bibitem[IBTimes]{times}
+``CertiKOS: Yale develops world's first hacker-resistant operating system." \emph{Internaltional Business Times}, 2016.
+\url{http://www.ibtimes.co.uk/certikos-yale-develops-worlds-first-hacker-resistant-operating-system-1591712}.
+
+\bibitem[YDN]{dnews}
 ``Yale computer scientists unveil new OS." \emph{Yale Daily News}, 2016.
 \url{http://yaledailynews.com/blog/2016/11/18/yale-computer-scientists-unveil-new-os/}.
 
@@ -502,10 +537,6 @@ H. Chen,  X. Wu, Z. Shao, J. Lockerman, and R. Gu. ``Toward compositional verifi
 %May 2001, pp. 368-373. Final version submitted for publication to {\it IEEE/ACM Transactions on
 %Networking}, and is available at 
 %http://yuba.stanford.edu/$\sim$sundaes/Papers/buffersubmit.pdf
-
-\bibitem[DeepSpec]{deepspec}
-DeepSpec: The science of deep specifications. 
-\url{http://deepspec.org/}.
 
 \begin{comment}
 \bibitem[7]{sel4}
