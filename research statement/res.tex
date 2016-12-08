@@ -78,14 +78,12 @@
 %\footnotetext{Check This}
 
 %[[What is my research goal?]]
-My research goal is to make the software systems truly reliable and secure through \emph{formal verification}.
+My research goal is to make critical software systems truly reliable and secure through \emph{formal verification}.
 %[[Why?]]
 As the backbone of 
 modern software systems,
-operating system (OS) kernels,
-on the one hand,
- can have the greatest impact on the reliability and security of today's computing host.
-On the other hand, OS kernels are complicated, highly-parallel, and prone to bugs.  For the past several years,  my research has focused on investigating programming language theories and developing scalable tools to build verified sequential and concurrent OS kernels that are formally proved to be error-free and secure~\cite{popl15-gu, osdi16-gu, pldi16-security, pldi16-device}.
+operating system (OS) kernels
+ can have the greatest impact on the reliability and security of today's computing host. OS kernels, however, are complex, highly concurrent, and prone to bugs.  For the past several years,  my research has focused on investigating compositional programming language theories and developing scalable tools to build verified sequential and concurrent OS kernels that are formally proved to be error-free and secure~\cite{popl15-gu, osdi16-gu, pldi16-security, pldi16-device}.
 Broadly speaking, my research
 falls into 
 the subfield of programming languages that
@@ -108,7 +106,7 @@ and system feature models and to apply these theories
 to build practical systems that behave as required
 through formal verification. 
 While such mechanical ``formal verification" can date back to the 1960s, 
-complete formal proofs of sequential OS kernels only became feasible recently, demonstrated by seL4 in 2009. This result was so encouraging that it seemed only a mile away from a fully verified concurrent kernel under reasonable proof efforts. However, 
+complete formal proofs of sequential OS kernels only became feasible recently, demonstrated by seL4 in 2009. This result was encouraging and it seemed not too far away from building a fully verified concurrent kernel under reasonable proof efforts. However, 
 seven years have passed,
 this last mile is still insurmountable.
 Even in the sequential setting, the cost of such verification is quite prohibitive
@@ -124,7 +122,7 @@ issues of concurrency.
 %[[An overview of my approach, and a summary of my results]]
  
 We believe that these problems
-are caused by an overlook of the \emph{layered structure} in the programming language theories.
+are caused by ignoring the \emph{layered structure} in the programming language theories.
 Although modern systems are implemented with
 well-designed layers, this layered structure has not been exploited by the verification techniques like program logics:  modules across different layers and multiple threads have to be reasoned about within 
 the same abstraction level. It makes the system verification
@@ -132,7 +130,7 @@ hard to untangle
 and costly to extend.
 
 My thesis research is among the first to address these challenges
-by advocating and realizing a novel class of specifications, named \emph{deep specifications}, through layered approach.
+by advocating and realizing a novel class of specifications, named \emph{deep specifications}, through a layered approach.
 In theory, these layered deep specifications uncover the 
 insights of  layered design patterns
 and are rich
@@ -143,7 +141,7 @@ The advances in both dimensions have resulted in a comprehensive
 verification framework, named CertiKOS, and
 a series of fully verified sequential and concurrent OS kernels.
 This CertiKOS work is used in high-profile DARPA programs~\cite{crash,hacms},
-is the core component of an NSF Expeditions in Computing project~\cite{deepspec}, and was widely considered
+is the core component of an NSF Expeditions in Computing project~\cite{deepspec}, and has been widely considered
  ``a real breakthrough" toward hacker-resistant systems~\cite{news, times, dnews}.
 
 
@@ -174,10 +172,10 @@ these layer interfaces are named
 as deep specifications, which precisely capture the functionality of the implementation under any context.
 
 
-As compilers enable the program development
+As compilers enable program development
 in higher-level and machine-independent languages,
-this layer-based theory allows the program verification 
-at some more abstract interfaces that are implementation independent. Each module is verified
+this layer-based theory allows program verification to be done
+over some more abstract interfaces that are implementation independent. Each module is verified
 at its proper abstraction level by showing the contextual
 simulation between the implementation at that level
 and the deep specification at a higher level.
@@ -186,7 +184,7 @@ Any client program or any functional property of this module
 can be reasoned about using this more abstract  layer specification alone, without going through the actual implementation.
 
 To apply this layer-based theory for the verification of real software systems,
-we develop the CertiKOS framework to  specify,  verify,  and compose certified abstraction layers  in the Coq proof assistant.
+we developed the CertiKOS framework to  specify,  verify,  and compose certified abstraction layers  in the Coq proof assistant.
 We also extended
 the CompCert verified compiler to compile certified C layers such
 that they can be linked with assembly layers.
@@ -316,7 +314,7 @@ I plan to pursue this goal through the following research directions at differen
 Existing  projects on real system verification,
 including CertiKOS, all require   (manually)  writing the actual implementation
  in a C-like language and a formal specification in a proof assistant language.
-Lacking the support of  writing certified  programs  directly makes the certified  software systems difficult to develop and maintain. I aim to cooperate with \emph{program synthesis} 
+Lacking the support of  writing certified  programs  directly makes the certified  software systems difficult to develop and maintain. I plan to work with \emph{program synthesis} 
 and \emph{artificial intelligence} researchers to bridge this enormous gap between the low-level system programming and the high-level specification reasoning
 through
 a uniform framework that enables programming certified software directly.
@@ -349,7 +347,7 @@ from the formal verification techniques. In the next five years, I will further 
 and apply them
 in the following domains: 
 \begin{itemize}
-\item I plan to cooperate with \emph{system researchers} to build a zero-vulnerability system stack consisting of verified components, such as device drivers,
+\item I plan to work with \emph{system researchers} to build a zero-vulnerability system stack consisting of verified components, such as device drivers,
 database system, file system, network stack, operating system,
  and distributed system.
  Although each of these components has been actively studied,
@@ -366,7 +364,7 @@ and different system features with a single computational theory.
 I am looking forward to exploring this huge research opportunity.
 
 
-\item I plan to cooperate with \emph{security researchers}
+\item I plan to work with \emph{security researchers}
 to  develop certified 
 commercial-grade toolkit for security
 protocols. 
@@ -375,7 +373,7 @@ The concept of our certified concurrent  layers can scale the existing security 
 with the concurrent context. The theoretical challenge that I have to solve is
 how to preserve the security guarantees under the simulation with concurrent context.
 
-\item I plan to cooperate with
+\item I plan to work with
 \emph{cyber-physical system (CPS) researchers} to build
 high-confident CPS with the real-time assurance.
 Due to the physical consequences, it is highly desirable to
@@ -391,7 +389,7 @@ However, it is still a big challenge on how to formally model the time. We belie
 I am looking forward to exploring this huge research opportunity when combining the formal verification with CPS.
 \end{comment}
 
-\item I plan to cooperate with
+\item I plan to work with
 \emph{program analysis} researchers to establish a general and efficient specification-based testing framework.
 For concurrent software (e.g., user-level apps) without high-reliability requirements, 
 the complete formal verification is unnecessary and too expensive,
