@@ -82,10 +82,8 @@ My research goal is to make critical software systems truly reliable and secure 
 %[[Why?]]
 As the backbone of 
 modern software systems,
-operating system (OS) kernels,
-on the one hand,
- can have the greatest impact on the reliability and security of today's computing host.
-On the other hand, OS kernels are complicated, highly-parallel, and prone to bugs.  For the past several years,  my research has focused on investigating programming language theories and developing scalable tools to build verified sequential and concurrent OS kernels that are formally proved to be error-free and secure~\cite{popl15-gu, osdi16-gu, pldi16-security, pldi16-device}.
+operating system (OS) kernels
+ can have the greatest impact on the reliability and security of today's computing host. OS kernels, however, are complex, highly concurrent, and prone to bugs.  For the past several years,  my research has focused on investigating compositional programming language theories and developing scalable tools to build verified sequential and concurrent OS kernels that are formally proved to be error-free and secure~\cite{popl15-gu, osdi16-gu, pldi16-security, pldi16-device}.
 Broadly speaking, my research
 falls into 
 the subfield of programming languages that
@@ -108,7 +106,7 @@ and system feature models and to apply these theories
 to build practical systems that behave as required
 through formal verification. 
 While such mechanical ``formal verification" can date back to the 1960s, 
-complete formal proofs of sequential OS kernels only became feasible recently, demonstrated by seL4 in 2009. This result was so encouraging that it seemed only a mile away from a fully verified concurrent kernel under reasonable proof efforts. However, 
+complete formal proofs of sequential OS kernels only became feasible recently, demonstrated by seL4 in 2009. This result was encouraging and it seemed not too far away from building a fully verified concurrent kernel under reasonable proof efforts. However, 
 seven years have passed,
 this last mile is still insurmountable.
 Even in the sequential setting, the cost of such verification is quite prohibitive
@@ -124,7 +122,7 @@ issues of concurrency.
 %[[An overview of my approach, and a summary of my results]]
  
 We believe that these problems
-are caused by an overlook of the \emph{layered structure} in the programming language theories.
+are caused by ignoring the \emph{layered structure} in the programming language theories.
 Although modern systems are implemented with
 well-designed layers, this layered structure has not been exploited by the verification techniques like program logics:  modules across different layers and multiple threads have to be reasoned about within 
 the same abstraction level. It makes the system verification
@@ -132,7 +130,7 @@ hard to untangle
 and costly to extend.
 
 My thesis research is among the first to address these challenges
-by advocating and realizing a novel class of specifications, named \emph{deep specifications}, through layered approach.
+by advocating and realizing a novel class of specifications, named \emph{deep specifications}, through a layered approach.
 In theory, these layered deep specifications uncover the 
 insights of  layered design patterns
 and are rich
