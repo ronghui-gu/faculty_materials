@@ -106,7 +106,7 @@ and system feature models and to apply these theories
 to build practical systems that behave as required
 through formal verification. 
 While such mechanical ``formal verification" can date back to the 1960s, 
-complete formal proofs of sequential OS kernels only became feasible recently, demonstrated by seL4 in 2009. This result was encouraging and it seemed not too far away from building a fully verified concurrent kernel under reasonable proof efforts. However, 
+complete formal proofs of sequential OS kernels only became feasible recently, demonstrated by seL4 in 2009. This result was encouraging, and it seemed not too far away from building a fully verified concurrent kernel under reasonable proof efforts. However, 
 seven years have passed,
 this last mile is still insurmountable.
 Even in the sequential setting, the cost of such verification is quite prohibitive
@@ -198,13 +198,13 @@ The most realistic one is called mCertiKOS,
 which consists of 37 certified abstraction layers, 
 took less than one person-year to develop,
 and can boot a version of Linux as a guest.
-An extended version of mCertiKOS was deployed on a military land vehicle in the context of a high-profiled  DARPA program
+An extended version of mCertiKOS was deployed on a military land vehicle in the context of a high-profile  DARPA program
 ~\cite{hacms}.
 
 \subsubsection*{\small Verifying Concurrent OS Kernels with CertiKOS}
 Moving from the sequential kernel verification
 to the concurrent one is not straightforward at all
-and requires a more powerful compositional theory.
+and requires a more robust compositional theory.
 A concurrent kernel allows arbitrarily  interleaved
 execution of kernel/user modules across different
 layers of abstraction. 
@@ -277,7 +277,7 @@ Thanks to the layer-based theory equipped with these new models,
 we successfully turned mCertiKOS
 %from an verified non-interruptible kernel 
 into an  interruptible kernel with verified  device
-drivers, e.g., serial, IOAPIC, etc. 
+drivers (e.g., serial and IOAPIC). 
 The entire extension  took  seven person-months
 to implement in Coq.
 To the best of our knowledge, this is the first verified
@@ -285,11 +285,34 @@ interruptible OS kernel with device drivers.
 
 \subsubsection*{\small End-to-End Security Verification in CertiKOS}
 In the layer-based theory, richer properties of the whole system can be
-directly derived  from the deep specifications.
+easily derived  from the deep specifications.
 Take the security property as an example.
 Protecting the confidentiality of information manipulated by
 a software system is one of the critical challenges
-facing today's cybersecurity community. A promising step
+facing today's cybersecurity community. 
+It is  challenging to specify the desired security policy
+of a complex system in a clean way
+and to conduct the proof in a uniform way
+that allows linking everything together into
+a system-wide guarantee.
+We address these issues by extending our CertiKOS framework~\cite{pldi16-security}. 
+We develop a novel
+methodology, called the \emph{observation function}, 
+which provides a  uniform mechanism
+to specify  security policies.
+A policy can be proved at the top-most layer of the kernel
+ using a general method that subsumes both security-label proofs and
+information-hiding proofs.
+By showing that our simulation preserves security,
+the guarantees can be propagated across layers of abstraction,
+ resulting in
+the first ever end-to-end secure kernel involving both C and assembly code.
+
+\begin{comment}
+ and using a special
+kind of simulation that is guaranteed to preserve security
+
+A promising step
 toward conquering this challenge is to  verify  the
 end-to-end information-flow
 security of the whole system formally. 
@@ -301,6 +324,7 @@ This security guarantee
 can be seen as end-to-end in the following two aspects: (1)
 it applies across all the layers, and (2) it ensures that the entire
 execution is secure from start to finish.
+\end{comment}
 
 \subsubsection*{\large Future Research Agenda}
 The goal of my research is to
@@ -345,7 +369,7 @@ artificial intelligence research.
 OS kernel is not the only area that can benefit
 from the formal verification techniques. In the next five years, I will further investigate more powerful and more compositional  verification theories
 and apply them
-in the following domains: 
+to the following domains: 
 \begin{itemize}
 \item I plan to work with \emph{system researchers} to build a zero-vulnerability system stack consisting of verified components, such as device drivers,
 database system, file system, network stack, operating system,
@@ -377,8 +401,8 @@ how to preserve the security guarantees under the simulation with concurrent con
 \emph{cyber-physical system (CPS) researchers} to build
 high-confident CPS with the real-time assurance.
 Due to the physical consequences, it is highly desirable to
-prove that CPS behaves as required in terms of both functionality and timing. 
-We have built an embedded system (a variant of mCertiKOS) that is proved to be functionally correct and can run on a real drone. But the most difficult problem left is how to formally
+prove that CPS behaves as required regarding both functionality and timing. 
+We have built an embedded system (a variant of mCertiKOS) that is proved to be functionally correct and can run on a real drone. However, the most difficult problem left is how to formally
 model the time in theory. My proposal is to abstract the flow of time  as a list of special events, which will be indicated by a timing oracle that is enriched from the concurrent context.
 With this model, we can apply 
 our concurrent verification techniques to prove
