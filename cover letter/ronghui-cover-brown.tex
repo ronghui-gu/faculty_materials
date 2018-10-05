@@ -1,0 +1,99 @@
+%basic cover letter template
+\documentclass{letter}
+\usepackage{amssymb,amsmath}
+\usepackage{graphicx}
+\usepackage[usenames,dvipsnames]{xcolor} 
+\definecolor{gray}{rgb}{0.45,0.45,0.45}
+\definecolor{red}{rgb}{.63, .235, .235}
+\definecolor{myblue}{rgb}{0,0.75,1.0}
+\usepackage[colorlinks,linkcolor=red,citecolor=red,urlcolor=red]{hyperref}
+
+\oddsidemargin=.2in
+\evensidemargin=.2in
+\textwidth=5.9in
+\topmargin=-.5in
+\textheight=9in
+
+%\address{Mathematics Department\\University of Illinois\\
+%1409 W. Green St\\Urbana, Illinois 61801}
+
+\newcommand*{\email}[1]{\normalsize\href{mailto:#1}{#1}}
+\newcommand {\qed}{\mbox{$\Box$}}
+\renewcommand {\iff}{\Longleftrightarrow}
+\newcommand {\R}{\mathbb{R}}
+\newcommand {\N}{\mathbb{N}}
+\newcommand {\Q}{\mathbb{Q}}
+\newcommand {\Z}{\mathbb{Z}}
+
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\opening}{l@}{r@}{}{}
+\patchcmd{\opening}{\@date\end}{\hfill\@date\mbox{}\end}{}{}
+\newcommand{\subject}[1]{\def\@subject{{\centering{#1}}}}
+\patchcmd{\opening}{#1\par\nobreak}{\ifundef{\@subject}{}{\@subject\par\vspace{2\parskip}}#1\par\nobreak}{}{}
+\makeatother
+
+\newcommand {\sub}{\mbox{SB}}
+\date{December 1, 2016}
+\address{Ronghui Gu \\ 
+51 Prospect Street \\
+Yale University \\
+New Haven, CT 06511-8285 \\
+\email{ronghui.gu@yale.edu} \\
+}
+
+\begin{document}
+\begin{letter}{}
+
+\subject{\begin{center} Re: Application for the position of tenure-track assistant professor\end{center}}
+
+
+\opening{Dear Madam/Sir,}
+%say what job are you are for:
+%I am writing to express my interest in 
+%I am writing to be considered for
+Please find enclosed my application materials for the position of
+tenure-track assistant professor in the Department of Computer Science at Brown University. 
+I am a Ph.D. candidate at Yale University under
+the direction of Prof. Zhong Shao. I will complete my degree in December 2016.
+
+
+My areas of interest are Programming Languages, 
+%and Operating Systems,
+more specifically, in techniques for building reliable and secure software systems. My work draws on program verification,
+certified compilation, formal methods, and language-based support for safety and security.
+
+I am a citizen of China, presently on an F-1 student visa.
+
+I have attached the following documents:
+\begin{itemize}
+\item  Curriculum Vitae, including a list of four references (Zhong Shao, Benjamin C. Pierce, Adam Chlipala, and Ruzica Piskac)
+\item Research Statement
+\item Teaching Statement 
+\item Three publications in OSDI'16, POPL'15, and PLDI'16
+\end{itemize}
+
+I would be grateful if you could consider my application favorably.
+
+%what are your specific research/teaching interests?I would be grateful if you could consider my application favorably.
+%here you could play up either teaching or research and mention highlights of your
+%CV, I also used it to say something about papers, since I hadn't published any
+% to put on my CV
+
+%tell them what application materials you have submitted and where
+%say who wrote your recs
+
+
+\closing{Sincerely,\\
+\vspace{3pt}
+\includegraphics[width=2.5cm]{signature.pdf}\\
+Ronghui Gu
+}
+%I made a pdf file of my signature using the scanner, so that all the cover letters I sent
+%electronically were "signed."  
+
+\end{letter}
+
+\end{document}
+
